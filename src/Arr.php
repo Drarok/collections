@@ -14,9 +14,21 @@ class Arr
      */
     public static function filter(array $arr, callable $callback)
     {
-        $result = array_filter($arr, $callback, ARRAY_FILTER_USE_BOTH);
+        $result = [];
 
-        // Indexed arrays are re-indexed, associative ones are left as-is.
+        // We can't use array_filter() with ARRAY_FILTER_USE_BOTH since it was added in PHP 5.6,
+        // and we are supporting PHP >= 5.5
+        $wrapper = function ($value, $key) use (&$result, $callback) {
+            if ($callback($value, $key)) {
+                $result[$key] = $value;
+            }
+        };
+
+        // Walk the array, build $result, and reset the internal pointer.
+        array_walk($arr, $wrapper);
+        reset($result);
+
+        // Indexed arrays are re-indexed from 0, associative ones are left as-is.
         if (is_int(key($result))) {
             $result = array_values($result);
         }
