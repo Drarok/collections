@@ -2,12 +2,12 @@
 
 namespace Zerifas\Collections\Test;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_TestCase;
 
 use Zerifas\Collections\Arr;
 use Zerifas\Collections\ArrayWrapper;
 
-class ArrTest extends TestCase
+class ArrTest extends PHPUnit_Framework_TestCase
 {
     public function testFilterAssoc()
     {
